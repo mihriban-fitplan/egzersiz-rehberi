@@ -47,11 +47,12 @@
     }
     .exercise-card.open .card-body { display: block; }
 
-    .gif-container {
-      width: 100%; height: 240px; background: #ffffff; border-radius: 8px;
-      margin: 12px 0; overflow: hidden; display: flex; align-items: center; justify-content: center;
+    .svg-container {
+      width: 100%; height: 180px; background: #0f172a; border-radius: 8px;
+      margin: 12px 0; display: flex; align-items: center; justify-content: center;
+      border: 1px solid #334155;
     }
-    .gif-container img { width: 100%; height: 100%; object-fit: contain; }
+    .svg-container svg { width: 100%; height: 100%; max-height: 160px; }
 
     .tip-box {
       background: rgba(245, 158, 11, 0.1); border-left: 3px solid var(--accent);
@@ -79,6 +80,24 @@
   </div>
 
   <script>
+    const svgIcons = {
+      legPress: `<svg viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg"><line x1="30" y1="100" x2="170" y2="20" stroke="#38bdf8" stroke-width="6" stroke-linecap="round"/><rect x="110" y="20" width="40" height="15" fill="#f59e0b" rx="3"/><circle cx="60" cy="70" r="10" fill="#94a3b8"/><line x1="60" y1="80" x2="100" y2="45" stroke="#94a3b8" stroke-width="4"/><line x1="100" y1="45" x2="120" y2="30" stroke="#f8fafc" stroke-width="4"/><text x="100" y="110" fill="#94a3b8" font-size="10" text-anchor="middle">Leg Press Açı Kontrolü</text></svg>`,
+      legCurl: `<svg viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg"><rect x="30" y="70" width="140" height="12" fill="#334155" rx="4"/><circle cx="50" cy="55" r="10" fill="#94a3b8"/><line x1="60" y1="60" x2="110" y2="60" stroke="#94a3b8" stroke-width="5"/><line x1="110" y1="60" x2="145" y2="40" stroke="#38bdf8" stroke-width="5"/><circle cx="145" cy="40" r="7" fill="#f59e0b"/><text x="100" y="105" fill="#94a3b8" font-size="10" text-anchor="middle">Lying Leg Curl</text></svg>`,
+      gluteBridge: `<svg viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg"><line x1="20" y1="90" x2="180" y2="90" stroke="#334155" stroke-width="4"/><circle cx="40" cy="80" r="9" fill="#94a3b8"/><path d="M 48 82 Q 90 40 130 90" stroke="#38bdf8" stroke-width="6" fill="none"/><line x1="130" y1="90" x2="160" y2="90" stroke="#f8fafc" stroke-width="4"/><text x="100" y="110" fill="#94a3b8" font-size="10" text-anchor="middle">Glute Bridge Yükseliş</text></svg>`,
+      calfRaise: `<svg viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg"><line x1="40" y1="95" x2="160" y2="95" stroke="#334155" stroke-width="4"/><line x1="100" y1="95" x2="100" y2="35" stroke="#38bdf8" stroke-width="6"/><circle cx="100" cy="25" r="10" fill="#94a3b8"/><path d="M 100 95 L 115 80 L 90 55" stroke="#f8fafc" stroke-width="4" fill="none"/><text x="100" y="115" fill="#94a3b8" font-size="10" text-anchor="middle">Calf Raise Parmak Ucu</text></svg>`,
+      shortFoot: `<svg viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg"><path d="M 40 85 Q 70 85 90 70 Q 120 55 160 85" stroke="#38bdf8" stroke-width="5" fill="none"/><line x1="30" y1="90" x2="170" y2="90" stroke="#334155" stroke-width="3"/><path d="M 90 70 Q 105 80 120 70" stroke="#f59e0b" stroke-width="3" fill="none"/><text x="100" y="110" fill="#94a3b8" font-size="10" text-anchor="middle">Ayak Arkı Aktivasyonu</text></svg>`,
+      row: `<svg viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg"><rect x="40" y="60" width="40" height="30" fill="#334155" rx="3"/><circle cx="70" cy="40" r="9" fill="#94a3b8"/><line x1="70" y1="49" x2="70" y2="70" stroke="#94a3b8" stroke-width="5"/><line x1="70" y1="58" x2="140" y2="58" stroke="#38bdf8" stroke-width="4"/><rect x="140" y="45" width="8" height="26" fill="#f59e0b"/><text x="100" y="110" fill="#94a3b8" font-size="10" text-anchor="middle">Seated Row Çekiş</text></svg>`,
+      latPull: `<svg viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg"><line x1="50" y1="20" x2="150" y2="20" stroke="#f59e0b" stroke-width="6"/><circle cx="100" cy="50" r="9" fill="#94a3b8"/><line x1="100" y1="59" x2="100" y2="90" stroke="#94a3b8" stroke-width="5"/><path d="M 65 30 L 100 55 L 135 30" stroke="#38bdf8" stroke-width="4" fill="none"/><text x="100" y="112" fill="#94a3b8" font-size="10" text-anchor="middle">Lat Pulldown Hızası</text></svg>`,
+      chestPress: `<svg viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg"><rect x="50" y="40" width="30" height="50" fill="#334155" rx="3"/><circle cx="85" cy="45" r="9" fill="#94a3b8"/><line x1="85" y1="54" x2="85" y2="80" stroke="#94a3b8" stroke-width="5"/><line x1="85" y1="60" x2="135" y2="60" stroke="#38bdf8" stroke-width="5"/><rect x="135" y="50" width="10" height="20" fill="#f59e0b"/><text x="100" y="110" fill="#94a3b8" font-size="10" text-anchor="middle">Chest Press İtiş</text></svg>`,
+      facePull: `<svg viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg"><circle cx="60" cy="50" r="9" fill="#94a3b8"/><line x1="60" y1="59" x2="60" y2="95" stroke="#94a3b8" stroke-width="5"/><line x1="60" y1="65" x2="140" y2="35" stroke="#38bdf8" stroke-width="3" stroke-dasharray="4"/><circle cx="140" cy="35" r="6" fill="#f59e0b"/><text x="100" y="112" fill="#94a3b8" font-size="10" text-anchor="middle">Face Pull Yüksek Dirsek</text></svg>`,
+      deadBug: `<svg viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg"><line x1="30" y1="85" x2="170" y2="85" stroke="#334155" stroke-width="4"/><circle cx="60" cy="73" r="8" fill="#94a3b8"/><line x1="68" y1="75" x2="120" y2="75" stroke="#94a3b8" stroke-width="5"/><line x1="100" y1="75" x2="80" y2="45" stroke="#38bdf8" stroke-width="4"/><line x1="120" y1="75" x2="145" y2="45" stroke="#38bdf8" stroke-width="4"/><text x="100" y="110" fill="#94a3b8" font-size="10" text-anchor="middle">Dead Bug Sırt Teması</text></svg>`,
+      gobletSquat: `<svg viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg"><rect x="120" y="65" width="35" height="30" fill="#334155" rx="3"/><circle cx="80" cy="40" r="9" fill="#94a3b8"/><path d="M 80 49 L 80 70 L 65 95 M 80 70 L 95 95" stroke="#38bdf8" stroke-width="5" stroke-linecap="round" fill="none"/><circle cx="85" cy="55" r="6" fill="#f59e0b"/><text x="100" y="112" fill="#94a3b8" font-size="10" text-anchor="middle">Box Goblet Squat</text></svg>`,
+      dumbbellRow: `<svg viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg"><rect x="40" y="70" width="70" height="10" fill="#334155" rx="2"/><circle cx="80" cy="45" r="8" fill="#94a3b8"/><line x1="88" y1="48" x2="130" y2="60" stroke="#94a3b8" stroke-width="4"/><line x1="110" y1="55" x2="110" y2="80" stroke="#38bdf8" stroke-width="4"/><circle cx="110" cy="85" r="6" fill="#f59e0b"/><text x="100" y="110" fill="#94a3b8" font-size="10" text-anchor="middle">Single Arm Row</text></svg>`,
+      pecDeck: `<svg viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg"><circle cx="100" cy="45" r="9" fill="#94a3b8"/><line x1="100" y1="54" x2="100" y2="85" stroke="#94a3b8" stroke-width="5"/><path d="M 55 50 Q 100 65 145 50" stroke="#38bdf8" stroke-width="5" fill="none"/><circle cx="55" cy="50" r="6" fill="#f59e0b"/><circle cx="145" cy="50" r="6" fill="#f59e0b"/><text x="100" y="110" fill="#94a3b8" font-size="10" text-anchor="middle">Pec Deck Açı Sınırı</text></svg>`,
+      hipAdduction: `<svg viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg"><circle cx="100" cy="35" r="9" fill="#94a3b8"/><line x1="100" y1="44" x2="100" y2="70" stroke="#94a3b8" stroke-width="5"/><line x1="100" y1="70" x2="70" y2="95" stroke="#38bdf8" stroke-width="5"/><line x1="100" y1="70" x2="130" y2="95" stroke="#38bdf8" stroke-width="5"/><path d="M 75 85 Q 100 75 125 85" stroke="#f59e0b" stroke-width="3" fill="none"/><text x="100" y="112" fill="#94a3b8" font-size="10" text-anchor="middle">Adduction Kapanış</text></svg>`,
+      singleBalance: `<svg viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg"><line x1="40" y1="95" x2="160" y2="95" stroke="#334155" stroke-width="4"/><circle cx="100" cy="30" r="9" fill="#94a3b8"/><line x1="100" y1="39" x2="100" y2="65" stroke="#94a3b8" stroke-width="5"/><line x1="100" y1="65" x2="100" y2="95" stroke="#38bdf8" stroke-width="5"/><path d="M 100 65 L 120 80 L 110 95" stroke="#94a3b8" stroke-width="3" fill="none"/><text x="100" y="112" fill="#94a3b8" font-size="10" text-anchor="middle">Tek Bacak Denge</text></svg>`
+    };
+
     const workoutData = {
       1: {
         info: "GÜN 1 • 50 dk • Alt Gövde & Ayak Tabanı Desteği",
@@ -88,35 +107,35 @@
             sets: "3 Set x 10-12 Tekrar",
             muscles: "Hedef: Quadriceps, Gluteus Maximus",
             tip: "Tepe noktasında dizleri ASLA geriye doğru kilitlemeyin (1-2 derece bükülü kalsın). Ağırlığı tarak kemiğine değil, topuklara verin.",
-            img: "https://upload.wikimedia.org/wikipedia/commons/2/23/Leg_press_exercise.png"
+            svg: svgIcons.legPress
           },
           {
             name: "Lying Leg Curl (Arka Bacak)",
             sets: "3 Set x 12 Tekrar",
             muscles: "Hedef: Hamstrings (Diz arkası koruyucuları)",
             tip: "Ağırlığı indirirken bacağı sonuna kadar bırakmayın, kas gerginliğini sürekli koruyarak diz eklem kapsülünü koruyun.",
-            img: "https://upload.wikimedia.org/wikipedia/commons/d/da/Lying_leg_curl_1.png"
+            svg: svgIcons.legCurl
           },
           {
             name: "Glute Bridge (Yerde Kalça Kaldırma)",
             sets: "3 Set x 12-15 Tekrar",
             muscles: "Hedef: Glutes, Core Stabilizasyonu",
             tip: "Kaldırırken beli aşırı bükmeyin. Tepe noktada kalçayı 2 saniye sıkıp kontrollü inin.",
-            img: "https://upload.wikimedia.org/wikipedia/commons/b/b2/Glute_Bridge.png"
+            svg: svgIcons.gluteBridge
           },
           {
             name: "Calf Raise (Baldır Yükselme)",
             sets: "3 Set x 15 Tekrar",
             muscles: "Hedef: Soleus (Derin kalf) & Aşil Tendonu",
             tip: "Tarak kemiklerini zemine aşırı bastırmadan, baldır kasını sıkarak kontrollü yükselin.",
-            img: "https://upload.wikimedia.org/wikipedia/commons/9/90/Standing_calf_raise_1.png"
+            svg: svgIcons.calfRaise
           },
           {
             name: "Short Foot / Towel Curl (Ayak Arkı)",
             sets: "3 Set x 10 Tekrar",
             muscles: "Hedef: Ayak İçi Derin Kaslar (Transvers Ark)",
             tip: "Çıplak ayakla, parmakları pençe yapmadan başparmak kökünü topuğa doğru yaklaştırıp ayak kemerini yükseltin.",
-            img: "https://upload.wikimedia.org/wikipedia/commons/e/e8/Towel_toe_curl_exercise.png"
+            svg: svgIcons.shortFoot
           }
         ]
       },
@@ -128,35 +147,35 @@
             sets: "3 Set x 10-12 Tekrar",
             muscles: "Hedef: Rhomboids, Latissimus Dorsi, Orta Trapez",
             tip: "Omuz eklemini öne yuvarlamadan kürek kemiklerini arkada birbirine yaklaştırın.",
-            img: "https://upload.wikimedia.org/wikipedia/commons/2/22/Seated_cable_rows_1.png"
+            svg: svgIcons.row
           },
           {
             name: "Lat Pulldown (Geniş Çekiş)",
             sets: "3 Set x 10-12 Tekrar",
             muscles: "Hedef: Kanat Kasları (Latissimus)",
             tip: "Barı çekerken vücudu aşırı geriye yatırmayın. Omuzları kulaklardan uzak tutarak göğüs üstüne indirin.",
-            img: "https://upload.wikimedia.org/wikipedia/commons/4/43/Lat_pulldown_1.png"
+            svg: svgIcons.latPull
           },
           {
             name: "Chest Press Makinesi",
             sets: "3 Set x 10 Tekrar",
             muscles: "Hedef: Pectoralis Major, Ön Omuz",
             tip: "Kolları iterken dirsekleri kilitlemeyin. Tutuş hizası omuzların hafif altında kalmalıdır.",
-            img: "https://upload.wikimedia.org/wikipedia/commons/a/a2/Chest_press_machine_1.png"
+            svg: svgIcons.chestPress
           },
           {
             name: "Face Pull (Makarada Yüze Çekiş)",
             sets: "3 Set x 15 Tekrar",
             muscles: "Hedef: Arka Omuz, Rotator Cuff Stabilizasyonu",
             tip: "Hipermobil omuzlar için en kritik harekettir. Halatı alnınıza çekerken dirsekleri yukarıda tutun.",
-            img: "https://upload.wikimedia.org/wikipedia/commons/8/88/Face_pull_exercise.png"
+            svg: svgIcons.facePull
           },
           {
             name: "Dead Bug (Kontrollü Karın)",
             sets: "3 Set x 8 Tekrar / Taraf",
             muscles: "Hedef: Transversus Abdominis (Derin Korse)",
             tip: "Bel boşluğunuz zeminle temasını asla kesmemelidir. Hareketi son derece yavaş yapın.",
-            img: "https://upload.wikimedia.org/wikipedia/commons/0/08/Dead_bug_exercise.png"
+            svg: svgIcons.deadBug
           }
         ]
       },
@@ -168,35 +187,35 @@
             sets: "3 Set x 10 Tekrar",
             muscles: "Hedef: Kalça, Kuadriseps, Pelvis",
             tip: "Arkada bir sehpa olsun; eklemleri aşırı esnetip dibe çökmek yerine kutuya dokunup kontrollü kalkın.",
-            img: "https://upload.wikimedia.org/wikipedia/commons/8/8c/Goblet_squat.png"
+            svg: svgIcons.gobletSquat
           },
           {
             name: "Single Arm Dumbbell Row",
             sets: "3 Set x 10 Tekrar / Kol",
             muscles: "Hedef: Sırt Asimetri Dengeleme & Çekiş",
             tip: "Gövdeyi döndürmeden, dirseği kalça cebine doğru çekin.",
-            img: "https://upload.wikimedia.org/wikipedia/commons/f/f0/One_arm_dumbbell_row_1.png"
+            svg: svgIcons.dumbbellRow
           },
           {
             name: "Machine Fly (Pec Deck)",
             sets: "3 Set x 12 Tekrar",
             muscles: "Hedef: Göğüs İzolasyonu",
             tip: "Kolları açarken omuz eklemini arkaya doğru aşırı gerdirmeyin. Dirsekler daima hafif kırık kalsın.",
-            img: "https://upload.wikimedia.org/wikipedia/commons/f/f6/Butterfly_machine_1.png"
+            svg: svgIcons.pecDeck
           },
           {
             name: "Hip Adduction Makinesi",
             sets: "3 Set x 12 Tekrar",
             muscles: "Hedef: İç Bacak & Pelvik Taban",
             tip: "Kapanışta dizleri çarptırmadan, açılışta ise bağların son esneme sınırına gitmeden orta açıklıkta çalışın.",
-            img: "https://upload.wikimedia.org/wikipedia/commons/6/67/Hip_adduction_machine.png"
+            svg: svgIcons.hipAdduction
           },
           {
             name: "Tek Bacak Denge Duruşu",
             sets: "3 Set x 30 sn / Bacak",
             muscles: "Hedef: Ayak Bileği Propriosepsiyonu",
             tip: "Sert zeminde durun. Dizinizi kilitlemeyin; ayak tabanının üç noktasına eşit basın.",
-            img: "https://upload.wikimedia.org/wikipedia/commons/1/14/Single_leg_balance_exercise.png"
+            svg: svgIcons.singleBalance
           }
         ]
       }
@@ -220,9 +239,7 @@
             <span class="chevron">▼</span>
           </div>
           <div class="card-body">
-            <div class="gif-container">
-              <img src="${ex.img}" alt="${ex.name}" loading="lazy" onerror="this.onerror=null; this.src='https://via.placeholder.com/400x240/111827/ffffff?text=Egzersiz+Gorseli';">
-            </div>
+            <div class="svg-container">${ex.svg}</div>
             <div class="tip-box">⚠️ <strong>Stabilite Kuralı:</strong> ${ex.tip}</div>
             <div class="target-muscles">${ex.muscles}</div>
           </div>
